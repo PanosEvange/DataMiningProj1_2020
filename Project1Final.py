@@ -37,6 +37,9 @@ from IPython.display import display
 # - ### *Make one csv with the specific columns*
 
 # region
+pd.set_option('display.max_columns', 300)
+pd.set_option('display.max_rows', 300)
+
 myMonthsFolder = ['febrouary','march','april']
 dataPathDir = './data/'
 
@@ -70,9 +73,8 @@ for month in myMonthsFolder:
 
     concatDf = pd.concat(monthFilesDfList, axis=1)
     concatDf = concatDf.fillna('-')
-    concatDf.name = month
+    
     display(concatDf)
-
     allMonthDf.append(concatDf)
 
 # check if corresponding files in months' folders have the same column names
@@ -96,3 +98,41 @@ else:
 
 # __Let's find which file has each of the specific columns that we need. As column
 # names in corresponding files in months' folders are the same we just need to check only one folder.__
+
+# region
+# define the columns that we want to have in train csv
+wantedColumns = ['id', 'zipcode', 'transit', 'Bedrooms', 'Beds', 'Review_scores_rating', 'Number_of_reviews', \
+                  'Neighbourhood', 'Neighbourhood_group', 'Name', 'Latitude', 'Longitude', 'Last_review', 'Instant_bookable', \
+                  'Host_since', 'Host_response_rate', 'Host_identity_verified', 'Host_has_profile_pic', 'First_review', \
+                  'Description', 'City', 'cancellation_policy', 'Bed_type', 'Bathrooms', 'Accommodates', 'Amenities', \
+                  'Room_type', 'Property_type', 'Log_price', 'Availability_365', 'Minimum_nights']
+
+specificMonthFilesDf = allMonthDf[0]
+dfColumns = list(specificMonthFilesDf)
+
+allColumnsFileMapDfList = []
+
+for col in wantedColumns:
+    # list of files that include the specific column
+    fileLists = []
+    
+    for fileName in dfColumns:
+        # so as not to have problem with case sensitivity
+        tempDf = specificMonthFilesDf[fileName].str.upper()
+
+        if col.upper() in tempDf.values:
+            fileLists.append(fileName)
+
+    # make df for this col
+    d = {col:fileLists}
+    df = pd.DataFrame(data=d)
+
+    allColumnsFileMapDfList.append(df)
+
+concatMapDf = pd.concat(allColumnsFileMapDfList, axis=1)
+concatMapDf = concatMapDf.fillna('-')
+
+display(concatMapDf)
+# endregion
+
+
