@@ -194,5 +194,8 @@ usefulColumns = [x.upper() for x in usefulColumns]
 
 trainCsv = trainCsv[usefulColumns]
 
+# save to csv file
+trainCsv.to_csv('train.csv',index=False)
+
 trainCsv
 # endregion
