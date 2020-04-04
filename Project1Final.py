@@ -92,9 +92,9 @@ else:
 # endregion
 
 # Παρατηρούμε ότι:
-# - Τα αντίστοιχα αρχεία σε όλους τους φακέλους των μηνών έχουν τα ίδια ονόματα στηλών
+# - Τα αντίστοιχα αρχεία σε όλους τους φακέλους των μηνών έχουν τα ίδια ονόματα στηλών.
 # - Τα περισσότερα .csv αρχεία έχουν σχετικά λίγες στήλες εκτός από το αρχείο listings.csv το οποίο
-# έχει πολλές στήλες οπότε είναι δύσκολο να βρούμε "με το μάτι" τις στήλες που ζητούνται 
+# έχει πολλές στήλες οπότε είναι δύσκολο να βρούμε "με το μάτι" τις στήλες που ζητούνται.
 
 # __Let's find which file has each of the specific columns that we need. As column
 # names in corresponding files in months' folders are the same we just need to check only one folder.__
@@ -134,5 +134,34 @@ concatMapDf = concatMapDf.fillna('-')
 
 display(concatMapDf)
 # endregion
+# Παρατηρούμε ότι οι περισσότερες από τις ζητούμενες στήλες βρίσκονται στα αρχεία listings.csv και listings0.csv.
+# Οπότε ας δούμε τα περιεχόμενα αυτών των αρχείων.
+
+# region
+testDf = pd.read_csv('./data/febrouary/listings0.csv', dtype='unicode')
+
+testDf
+# endregion
+# region
+testDf = pd.read_csv('./data/febrouary/listings.csv', dtype='unicode')
+
+testDf
+# endregion
 
 
+# Από οσο βλέπουμε τα δεδομένα για τις περισσότερες από τις ζητούμενες στήλες είναι ίδια και στο listings.csv
+# και στο listings0.csv. Οπότε αρκεί να τα πάρουμε από το listings.csv.
+
+# region
+
+# read listings.csv from the 3 folders
+febDf = pd.read_csv('./data/febrouary/listings.csv', dtype='unicode')
+marDf = pd.read_csv('./data/march/listings.csv', dtype='unicode')
+aprDf = pd.read_csv('./data/april/listings.csv', dtype='unicode')
+
+# add extra column for each month
+febDf['month'] = ['February' for i in range(febDf.shape[0])]
+marDf['month'] = ['March' for i in range(marDf.shape[0])]
+aprDf['month'] = ['April' for i in range(aprDf.shape[0])]
+
+# endregion
