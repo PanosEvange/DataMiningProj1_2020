@@ -199,3 +199,15 @@ trainCsv.to_csv('train.csv',index=False)
 
 trainCsv
 # endregion
+
+# - ### *Find the most common room type*
+
+# region
+# groupBy room_type
+roomTypesCountSeries = trainCsv.groupby(['ROOM_TYPE'])['ID'].count()
+
+# we need the max of these counts
+mostCommonRoomType = roomTypesCountSeries[roomTypesCountSeries == roomTypesCountSeries.max()]
+
+print('The most common room type is the \'' + str(mostCommonRoomType.index[0]) + '\'')
+# endregion
