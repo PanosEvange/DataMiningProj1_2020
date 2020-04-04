@@ -211,3 +211,25 @@ mostCommonRoomType = roomTypesCountSeries[roomTypesCountSeries == roomTypesCount
 
 print('The most common room type is the \'' + str(mostCommonRoomType.index[0]) + '\'')
 # endregion
+
+# - ### *Price evaluation during 3 months*
+
+# region
+
+# to fill
+
+# endregion
+
+# - ### *Find first 5 neighbourhoods with most reviews*
+
+# region
+# groupBy neighbourhood
+neighbourhoodReviewsSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['NUMBER_OF_REVIEWS'].count()
+
+# sort values
+neighbourhoodReviewsSeries = neighbourhoodReviewsSeries.sort_values(ascending=False)
+
+print('The first 5 neighbourhoods with most reviews are:')
+for x in neighbourhoodReviewsSeries[0:5].index:
+    print(x)
+# endregion
