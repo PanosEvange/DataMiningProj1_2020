@@ -29,7 +29,9 @@ import pandas as pd
 import os
 from IPython.display import display
 
-# for something else
+# visualization
+import seaborn as sns
+import matplotlib.pyplot as plt
 # endregion
 
 # ## __Data Exploration__
@@ -219,4 +221,58 @@ neighbourhoodReviewsSeries = neighbourhoodReviewsSeries.sort_values(ascending=Fa
 print('The first 5 neighbourhoods with most reviews are:')
 for x in neighbourhoodReviewsSeries[0:5].index:
     print(x)
+# endregion
+
+# - ### *Find the neighbourhood with the most entries*
+
+# region
+
+# to fill
+
+# endregion
+
+# - ### *Find number of entries per neighbourhood and per month*
+
+# region
+# groupBy neighbourhood
+neighbourhoodEntriesSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['ID'].count()
+
+# groupBy month
+monthEntriesSeries = trainCsv.groupby(['MONTH'])['ID'].count()
+# endregion
+
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=neighbourhoodEntriesSeries.values, y=neighbourhoodEntriesSeries.index)
+ax.set(title='Count of entries by neighbourhood', xlabel='Entries', ylabel='Neighbourhood')
+plt.show()
+
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=monthEntriesSeries.index, y=monthEntriesSeries.values)
+ax.set(title='Count of entries by month', xlabel='Month', ylabel='Entries')
+plt.show()
+
+# - ### *Make histogram of neighbourhood variable*
+
+# region
+
+# to fill
+
+# endregion
+
+# - ### *Find the most common room type in every neighbourhood*
+
+# region
+
+# to fill
+
+# endregion
+
+# - ### *Find the most expensive room type*
+
+# region
+
+# to fill
+
 # endregion
