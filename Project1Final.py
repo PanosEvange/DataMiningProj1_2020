@@ -102,10 +102,10 @@ else:
 # region
 # define the columns that we want to have in train csv
 wantedColumns = ['id', 'zipcode', 'transit', 'Bedrooms', 'Beds', 'Review_scores_rating', 'Number_of_reviews', \
-                  'Neighbourhood', 'Neighbourhood_group', 'Name', 'Latitude', 'Longitude', 'Last_review', 'Instant_bookable', \
+                  'Neighbourhood', 'Name', 'Latitude', 'Longitude', 'Last_review', 'Instant_bookable', \
                   'Host_since', 'Host_response_rate', 'Host_identity_verified', 'Host_has_profile_pic', 'First_review', \
                   'Description', 'City', 'cancellation_policy', 'Bed_type', 'Bathrooms', 'Accommodates', 'Amenities', \
-                  'Room_type', 'Property_type', 'Log_price', 'Availability_365', 'Minimum_nights']
+                  'Room_type', 'Property_type', 'price', 'Availability_365', 'Minimum_nights']
 
 specificMonthFilesDf = allMonthDf[0]
 dfColumns = list(specificMonthFilesDf)
@@ -149,8 +149,8 @@ testDf
 # endregion
 
 
-# Από οσο βλέπουμε τα δεδομένα για τις περισσότερες από τις ζητούμενες στήλες είναι ίδια και στο listings.csv
-# και στο listings0.csv. Οπότε αρκεί να τα πάρουμε από το listings.csv.
+# Από οσο βλέπουμε τα δεδομένα για τις ζητούμενες στήλες είναι ίδια τόσο στο listings0.csv όσο και στο
+# στο listings.csv. Οπότε αρκεί να πάρουμε τα δεδομένα από το listings.csv.
 
 # region
 # read listings.csv from the 3 folders
@@ -166,29 +166,16 @@ aprDf['month'] = ['April' for i in range(aprDf.shape[0])]
 monthsDfToConcat = [febDf, marDf, aprDf]
 trainCsv = pd.concat(monthsDfToConcat, ignore_index=True)
 
-# we need neighbourhood_group from listings0.csv files
-febDf = pd.read_csv('./data/febrouary/listings0.csv', dtype='unicode')
-marDf = pd.read_csv('./data/march/listings0.csv', dtype='unicode')
-aprDf = pd.read_csv('./data/april/listings0.csv', dtype='unicode')
-
-monthsDfToConcat = [febDf, marDf, aprDf]
-middleCsv = pd.concat(monthsDfToConcat, ignore_index=True)
-middleCsv = middleCsv[['id','neighbourhood_group']]
-
-# we can add the new neighbourhood_group column as we have seen that data are\
-# in the same order in both listings.csv and listings0.csv
-trainCsv['neighbourhood_group'] = middleCsv['neighbourhood_group']
-
 # let's keep only useful columns
 # make all uppercase so as not to have problem with case sensitivity
 trainCsv.columns = [x.upper() for x in trainCsv.columns]
 
-# These are the columns we want except log_price column. We have also added month column 
+# These are the columns we want. We have also added month column 
 usefulColumns = ['id', 'zipcode', 'transit', 'Bedrooms', 'Beds', 'Review_scores_rating', 'Number_of_reviews', \
-                  'Neighbourhood', 'Neighbourhood_group', 'Name', 'Latitude', 'Longitude', 'Last_review', 'Instant_bookable', \
+                  'Neighbourhood', 'Name', 'Latitude', 'Longitude', 'Last_review', 'Instant_bookable', \
                   'Host_since', 'Host_response_rate', 'Host_identity_verified', 'Host_has_profile_pic', 'First_review', \
                   'Description', 'City', 'cancellation_policy', 'Bed_type', 'Bathrooms', 'Accommodates', 'Amenities', \
-                  'Room_type', 'Property_type', 'Availability_365', 'Minimum_nights', 'Month']
+                  'Room_type', 'Property_type', 'price', 'Availability_365', 'Minimum_nights', 'Month']
 
 usefulColumns = [x.upper() for x in usefulColumns]
 
