@@ -229,9 +229,13 @@ for x in neighbourhoodReviewsSeries[0:5].index:
 # - ### *Find the neighbourhood with the most entries*
 
 # region
+# groupBy neighbourhood
+neighbourhoodEntriesSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['ID'].nunique()
 
-# to fill
+# sort values
+neighbourhoodEntriesSeries = neighbourhoodEntriesSeries.sort_values(ascending=False)
 
+print('The neighbourhood with most reviews is:',neighbourhoodReviewsSeries.index[0])
 # endregion
 
 # - ### *Find number of entries per neighbourhood and per month*
