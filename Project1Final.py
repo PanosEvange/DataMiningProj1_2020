@@ -204,10 +204,18 @@ print('The most common room type is the \'' + str(mostCommonRoomType.index[0]) +
 # - ### *Price evaluation during 3 months*
 
 # region
+floatDf = trainCsv[['PRICE', 'MONTH']].copy()
+floatDf['PRICE'] = floatDf['PRICE'].str.replace('$','')
+floatDf['PRICE'] = floatDf['PRICE'].str.replace(',','')
+floatDf['PRICE'] = floatDf['PRICE'].astype(float)
 
-# to fill
+# groupBy month
+pricesSeries = floatDf.groupby(['MONTH']).mean()
 
+pricesSeries
 # endregion
+
+sns.distplot(floatDf['PRICE']);
 
 # - ### *Find first 5 neighbourhoods with most reviews*
 
