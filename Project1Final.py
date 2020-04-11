@@ -240,24 +240,10 @@ print('The neighbourhood with most reviews is:',neighbourhoodReviewsSeries.index
 
 # - ### *Find number of entries per neighbourhood and per month*
 
-# region
-# groupBy neighbourhood
-neighbourhoodEntriesSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['ID'].nunique()
-
-# groupBy month
-monthEntriesSeries = trainCsv.groupby(['MONTH'])['ID'].nunique()
-# endregion
-
 sns.set(style="whitegrid")
-plt.figure(figsize=(9, 9))
-ax = sns.barplot(x=neighbourhoodEntriesSeries.values, y=neighbourhoodEntriesSeries.index)
-ax.set(title='Count of entries by neighbourhood', xlabel='Entries', ylabel='Neighbourhood')
-plt.show()
-
-sns.set(style="whitegrid")
-plt.figure(figsize=(9, 9))
-ax = sns.barplot(x=monthEntriesSeries.index, y=monthEntriesSeries.values)
-ax.set(title='Count of entries by month', xlabel='Month', ylabel='Entries')
+plt.figure(figsize=(10, 13))
+ax = sns.countplot(y="NEIGHBOURHOOD", hue="MONTH", data=trainCsv)
+ax.set(title='Count of entries by month and by neighborhood', xlabel='Month', ylabel='Entries')
 plt.show()
 
 # - ### *Make histogram of neighbourhood variable*
