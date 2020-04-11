@@ -212,8 +212,11 @@ print('The most common room type is the \'' + str(mostCommonRoomType.index[0]) +
 # - ### *Find first 5 neighbourhoods with most reviews*
 
 # region
+intDf = trainCsv[['NEIGHBOURHOOD', 'NUMBER_OF_REVIEWS']].copy()
+intDf['NUMBER_OF_REVIEWS'] = intDf['NUMBER_OF_REVIEWS'].apply(int)
+
 # groupBy neighbourhood
-neighbourhoodReviewsSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['NUMBER_OF_REVIEWS'].count()
+neighbourhoodReviewsSeries = intDf.groupby(['NEIGHBOURHOOD'])['NUMBER_OF_REVIEWS'].sum()
 
 # sort values
 neighbourhoodReviewsSeries = neighbourhoodReviewsSeries.sort_values(ascending=False)
