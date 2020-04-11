@@ -263,9 +263,14 @@ plt.show()
 # - ### *Make histogram of neighbourhood variable*
 
 # region
+# groupBy neighbourhood
+neighbourhoodEntriesSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['ID'].nunique()
 
-# to fill
-
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=neighbourhoodEntriesSeries.values, y=neighbourhoodEntriesSeries.index)
+ax.set(title='Histogram of Neighbourhood variable', xlabel='Entries', ylabel='Neighbourhood')
+plt.show()
 # endregion
 
 # - ### *Find the most common room type in every neighbourhood*
