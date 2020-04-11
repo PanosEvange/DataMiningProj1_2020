@@ -193,7 +193,7 @@ trainCsv
 
 # region
 # groupBy room_type
-roomTypesCountSeries = trainCsv.groupby(['ROOM_TYPE'])['ID'].count()
+roomTypesCountSeries = trainCsv.groupby(['ROOM_TYPE'])['ID'].nunique()
 
 # we need the max of these counts
 mostCommonRoomType = roomTypesCountSeries[roomTypesCountSeries == roomTypesCountSeries.max()]
@@ -235,10 +235,10 @@ for x in neighbourhoodReviewsSeries[0:5].index:
 
 # region
 # groupBy neighbourhood
-neighbourhoodEntriesSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['ID'].count()
+neighbourhoodEntriesSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['ID'].nunique()
 
 # groupBy month
-monthEntriesSeries = trainCsv.groupby(['MONTH'])['ID'].count()
+monthEntriesSeries = trainCsv.groupby(['MONTH'])['ID'].nunique()
 # endregion
 
 sns.set(style="whitegrid")
