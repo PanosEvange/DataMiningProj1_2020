@@ -28,11 +28,15 @@
 import pandas as pd
 import os
 from IPython.display import display
+from IPython.display import Image
+import numpy as np
 
 # visualization
 import seaborn as sns
 import matplotlib.pyplot as plt
 import folium
+from wordcloud import WordCloud
+from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 # endregion
 
 # ## __Data Exploration__
@@ -324,6 +328,47 @@ map
 # endregion
 
 # - ### *Wordclouds*
+
+#   - #### Neigbourhood Wordcloud
+
+# region
+wholeNeihborhoodText = ''
+for neihborhoodText in trainCsv['NEIGHBOURHOOD']:
+
+    # to be removed
+    if(pd.isna(neihborhoodText)): # ignore nan 
+        continue
+    # to be removed
+    
+    # make words like "Agios Nikolaos" one word -> AgiosNikolaos
+    neihborhoodText = neihborhoodText.replace(" ", "")
+    
+    wholeNeihborhoodText = wholeNeihborhoodText + ' ' + neihborhoodText
+
+wc = WordCloud(width=600, height=600, background_color='white',collocations = False, stopwords=ENGLISH_STOP_WORDS)
+
+wc.generate(wholeNeihborhoodText)
+wc.to_file('neighbourhoodWordcloud.png')
+
+Image('neighbourhoodWordcloud.png')
+# endregion
+#   - #### Transit Wordcloud
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Description Wordcloud
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Last review Wordcloud
 
 # region
 
