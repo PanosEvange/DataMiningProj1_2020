@@ -227,6 +227,7 @@ pricesSeries = pricesSeries.rename(dInverse)
 pricesSeries
 # endregion
 
+sns.set(style="whitegrid")
 plt.figure(figsize=(9, 9))
 plt.plot(pricesSeries.index, pricesSeries.values)
 plt.xlabel('Month')
@@ -268,7 +269,7 @@ print('The neighbourhood with most reviews is:',neighbourhoodReviewsSeries.index
 sns.set(style="whitegrid")
 plt.figure(figsize=(10, 13))
 ax = sns.countplot(y="NEIGHBOURHOOD", hue="MONTH", data=trainCsv)
-ax.set(title='Count of entries by month and by neighborhood', xlabel='Month', ylabel='Entries')
+ax.set(title='Count of entries by month and by neighborhood', xlabel='Entries', ylabel='Neighborhood')
 plt.show()
 
 # - ### *Make histogram of neighbourhood variable*
