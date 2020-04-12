@@ -32,6 +32,7 @@ from IPython.display import display
 # visualization
 import seaborn as sns
 import matplotlib.pyplot as plt
+import folium
 # endregion
 
 # ## __Data Exploration__
@@ -224,9 +225,6 @@ dInverse = {2:'February', 3:'March', 4:'April'}
 
 pricesSeries = pricesSeries.rename(dInverse)
 
-pricesSeries
-# endregion
-
 sns.set(style="whitegrid")
 plt.figure(figsize=(9, 9))
 plt.plot(pricesSeries.index, pricesSeries.values)
@@ -234,6 +232,7 @@ plt.xlabel('Month')
 plt.ylabel('Price')
 plt.title('Price evaluation during 3 months')
 plt.show()
+# endregion
 
 # - ### *Find first 5 neighbourhoods with most reviews*
 
@@ -294,6 +293,37 @@ plt.show()
 # endregion
 
 # - ### *Find the most expensive room type*
+
+# region
+
+# to fill
+
+# endregion
+
+# - ### *Show some entries in Follium Map*
+
+# region
+# Let's select month February
+subsetTrainCsv = trainCsv[trainCsv.MONTH == 'February']
+
+# Gather locations
+locations = subsetTrainCsv[['LATITUDE', 'LONGITUDE']]
+locationlist = locations.values.tolist()
+
+map = folium.Map(location=[37.97615090257737, 23.72510962013185], zoom_start=14)
+tooltip = 'Click me!'
+
+# for point in range(0, len(locationlist)):
+for point in range(0, 500):
+    stringForPopUp = subsetTrainCsv['PROPERTY_TYPE'][point] + '\n' + subsetTrainCsv['ROOM_TYPE'][point] \
+        + '\n' + subsetTrainCsv['BED_TYPE'][point] + '\n' + subsetTrainCsv['PRICE'][point] \
+        + '\n'
+    folium.Marker(locationlist[point], popup=stringForPopUp, tooltip=tooltip).add_to(map)
+
+map
+# endregion
+
+# - ### *Wordclouds*
 
 # region
 

@@ -21,7 +21,7 @@
     1. ~~Ιστόγραμμα neighborhood~~
     1. Πιο συχνό room_type σε κάθε γειτονιά.
     1. Ο πιο ακριβός τύπος δωματίου
-    1. Folium Map κλπ
+    1. ~~Folium Map κλπ~~
     1. Wordclouds
     1. Extra 2 questions
 1. Σκεφτόμαστε για το ερώτημα 1.12.
