@@ -209,13 +209,30 @@ floatDf['PRICE'] = floatDf['PRICE'].str.replace('$','')
 floatDf['PRICE'] = floatDf['PRICE'].str.replace(',','')
 floatDf['PRICE'] = floatDf['PRICE'].astype(float)
 
+# replace Months with number so as we can sort them 
+d = {'February':2, 'March':3, 'April':4}
+
+floatDf.MONTH = floatDf.MONTH.map(d)
+
 # groupBy month
-pricesSeries = floatDf.groupby(['MONTH']).mean()
+pricesSeries = floatDf.groupby(['MONTH'])['PRICE'].mean()
+
+pricesSeries = pricesSeries.sort_values(ascending=False)
+
+# replace again the number with monthname 
+dInverse = {2:'February', 3:'March', 4:'April'}
+
+pricesSeries = pricesSeries.rename(dInverse)
 
 pricesSeries
 # endregion
 
-sns.distplot(floatDf['PRICE']);
+plt.figure(figsize=(9, 9))
+plt.plot(pricesSeries.index, pricesSeries.values)
+plt.xlabel('Month')
+plt.ylabel('Price')
+plt.title('Price evaluation during 3 months')
+plt.show()
 
 # - ### *Find first 5 neighbourhoods with most reviews*
 
