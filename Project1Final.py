@@ -376,8 +376,22 @@ Image('transitWordcloud.png')
 #   - #### Description Wordcloud
 
 # region
+wholeDescriptionText = ''
+for descriptionText in trainCsv['DESCRIPTION']:
 
-# to fill
+    # to be removed
+    if(pd.isna(descriptionText)): # ignore nan 
+        continue
+    # to be removed
+    
+    wholeDescriptionText = wholeDescriptionText + ' ' + descriptionText
+
+wc = WordCloud(width=600, height=600, background_color='white', stopwords=ENGLISH_STOP_WORDS)
+
+wc.generate(wholeDescriptionText)
+wc.to_file('descriptionWordcloud.png')
+
+Image('descriptionWordcloud.png')
 
 # endregion
 
