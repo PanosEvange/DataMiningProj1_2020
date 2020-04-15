@@ -355,9 +355,22 @@ Image('neighbourhoodWordcloud.png')
 #   - #### Transit Wordcloud
 
 # region
+wholeTransitText = ''
+for transitText in trainCsv['TRANSIT']:
 
-# to fill
+    # to be removed
+    if(pd.isna(transitText)): # ignore nan 
+        continue
+    # to be removed
+    
+    wholeTransitText = wholeTransitText + ' ' + transitText
 
+wc = WordCloud(width=600, height=600, background_color='white', stopwords=ENGLISH_STOP_WORDS)
+
+wc.generate(wholeTransitText)
+wc.to_file('transitWordcloud.png')
+
+Image('transitWordcloud.png')
 # endregion
 
 #   - #### Description Wordcloud
