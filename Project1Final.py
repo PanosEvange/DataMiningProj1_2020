@@ -240,35 +240,13 @@ groupedByNeighborhood = trainCsv.groupby(['NEIGHBOURHOOD'])
 zipCodeNeighborhoodDict = dict()
 
 for neighborhood in neighborhoodNames:
-    print('Neighborhood: ',neighborhood )
     zipCodeCountSeries = groupedByNeighborhood.get_group(neighborhood).groupby('ZIPCODE')['ID'].nunique()
-    print(zipCodeCountSeries)
     mostCommonZipCode = zipCodeCountSeries[zipCodeCountSeries == zipCodeCountSeries.max()]
-    print('Most common zipcode: ', mostCommonZipCode.index[0])
-    print('---------------------------\n\n')
     zipCodeNeighborhoodDict[neighborhood] = mostCommonZipCode.index[0]
-# zipCodeByNeighborhood = trainCsv.groupby(['NEIGHBOURHOOD']).groupby(['ZIPCODE']).count()
 
-# zipCodeByNeighborhood
-
-# lala = trainCsv.groupby(['NEIGHBOURHOOD']).get_group('Psyri').groupby('ZIPCODE')['ID'].count()
-
-# lala
+#fill nan values with the most common zipcode of the corresponding neighborhood
+trainCsv['ZIPCODE'] = trainCsv['ZIPCODE'].fillna(trainCsv.NEIGHBOURHOOD.map(zipCodeNeighborhoodDict))
 # endregion
-
-neighborhoodNames
-
-# region
-cleanedList = [x for x in neighborhoodNames if not pd.isna(x)]
-
-cleanedList
-# endregion
-
-list(trainCsv.NEIGHBOURHOOD.unique())
-
-trainCsv[trainCsv['ZIPCODE'].isna()]
-
-trainCsv.loc[trainCsv['NEIGHBOURHOOD'] == 'Psyri']
 
 # - ### *Find the most common room type*
 
