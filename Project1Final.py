@@ -170,8 +170,31 @@ febDf['month'] = ['February' for i in range(febDf.shape[0])]
 marDf['month'] = ['March' for i in range(marDf.shape[0])]
 aprDf['month'] = ['April' for i in range(aprDf.shape[0])]
 
-monthsDfToConcat = [febDf, marDf, aprDf]
-trainCsv = pd.concat(monthsDfToConcat, ignore_index=True)
+# replace last_review date with its review_text
+reviewsCsvs = ['./data/febrouary/reviews.csv', './data/march/reviews.csv', './data/april/reviews.csv']
+monthsDfs = [febDf, marDf, aprDf]
+
+for i in range(0,len(monthsDfs)):
+    currentReviewDf = pd.read_csv(reviewsCsvs[i], dtype='unicode')
+
+    # we need only the 2 key-columns (listing_id, date) and the "new" column (comments)
+    currentReviewDf = currentReviewDf[['listing_id','date','comments']]
+
+    #rename key-columns so as to be same in both dataframes
+    currentReviewDf = currentReviewDf.rename(columns={"date": "review_date", "comments": "review_text"})
+    monthsDfs[i] = monthsDfs[i].rename(columns={"id": "listing_id", "last_review": "review_date"})
+
+    #merge dataframes on listing_id and review_date (which is the last_review date in main "train" csv)
+    monthsDfs[i] = pd.merge(monthsDfs[i], currentReviewDf, how='left', on=['listing_id', 'review_date'])
+
+    #revert to previous names in main "train" csv
+    monthsDfs[i] = monthsDfs[i].rename(columns={"listing_id": "id", "review_text": "last_review"})
+
+    #we may have some duplicates, because there may be more than one review for the last_review date
+    #so we will keep only the first one
+    monthsDfs[i] = monthsDfs[i][monthsDfs[i].duplicated(subset='id', keep='first') == False]
+
+trainCsv = pd.concat(monthsDfs, ignore_index=True)
 
 # let's keep only useful columns
 # make all uppercase so as not to have problem with case sensitivity
