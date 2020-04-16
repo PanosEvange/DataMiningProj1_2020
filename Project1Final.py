@@ -227,16 +227,16 @@ trainCsv.isna().any()
 #   - #### Handling missing data on zipcode column
 
 # region
-#find unique values of neighboorhood variable
+# find unique values of neighboorhood variable
 neighborhoodNames = list(trainCsv.NEIGHBOURHOOD.unique())
 
-#remove nan values
+# remove nan values
 neighborhoodNames = [x for x in neighborhoodNames if not pd.isna(x)]
 
-#group by neighborhood
+# group by neighborhood
 groupedByNeighborhood = trainCsv.groupby(['NEIGHBOURHOOD'])
 
-#for each neighborhood find the most common zipcode
+# for each neighborhood find the most common zipcode
 zipCodeNeighborhoodDict = dict()
 
 for neighborhood in neighborhoodNames:
@@ -244,7 +244,7 @@ for neighborhood in neighborhoodNames:
     mostCommonZipCode = zipCodeCountSeries[zipCodeCountSeries == zipCodeCountSeries.max()]
     zipCodeNeighborhoodDict[neighborhood] = mostCommonZipCode.index[0]
 
-#fill nan values with the most common zipcode of the corresponding neighborhood
+# fill nan values with the most common zipcode of the corresponding neighborhood
 trainCsv['ZIPCODE'] = trainCsv['ZIPCODE'].fillna(trainCsv.NEIGHBOURHOOD.map(zipCodeNeighborhoodDict))
 # endregion
 
@@ -252,6 +252,17 @@ trainCsv['ZIPCODE'] = trainCsv['ZIPCODE'].fillna(trainCsv.NEIGHBOURHOOD.map(zipC
 
 # fill nan values with empty text, as transit column has free text content
 trainCsv['TRANSIT'] = trainCsv['TRANSIT'].fillna("")
+
+#   - #### Handling missing data on bedroom column
+
+
+# region
+# the bedrooms nan values are few, so we will fill nan values with the number of beds, that means 1 bedroom for each bed
+trainCsv['BEDROOMS'] = trainCsv['BEDROOMS'].fillna(trainCsv['BEDS'])
+
+# drop rows that have nan values on both bedrooms and beds columns (where bedrooms are still nan)
+trainCsv = trainCsv.dropna(subset=['BEDROOMS'])
+# endregion
 
 # - ### *Find the most common room type*
 
