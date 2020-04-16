@@ -217,6 +217,59 @@ trainCsv.to_csv('train.csv',index=False)
 trainCsv
 # endregion
 
+# - ### *Handling Missing Data*
+
+# Let's see if we have missing data
+
+#Let's check which columns contain nan values
+trainCsv.isna().any()
+
+# Handling missing data on zipcode column
+
+# region
+#find unique values of neighboorhood variable
+neighborhoodNames = list(trainCsv.NEIGHBOURHOOD.unique())
+
+#remove nan values
+neighborhoodNames = [x for x in neighborhoodNames if not pd.isna(x)]
+
+#group by neighborhood
+groupedByNeighborhood = trainCsv.groupby(['NEIGHBOURHOOD'])
+
+#for each neighborhood find the most common zipcode
+zipCodeNeighborhoodDict = dict()
+
+for neighborhood in neighborhoodNames:
+    print('Neighborhood: ',neighborhood )
+    zipCodeCountSeries = groupedByNeighborhood.get_group(neighborhood).groupby('ZIPCODE')['ID'].nunique()
+    print(zipCodeCountSeries)
+    mostCommonZipCode = zipCodeCountSeries[zipCodeCountSeries == zipCodeCountSeries.max()]
+    print('Most common zipcode: ', mostCommonZipCode.index[0])
+    print('---------------------------\n\n')
+    zipCodeNeighborhoodDict[neighborhood] = mostCommonZipCode.index[0]
+# zipCodeByNeighborhood = trainCsv.groupby(['NEIGHBOURHOOD']).groupby(['ZIPCODE']).count()
+
+# zipCodeByNeighborhood
+
+# lala = trainCsv.groupby(['NEIGHBOURHOOD']).get_group('Psyri').groupby('ZIPCODE')['ID'].count()
+
+# lala
+# endregion
+
+neighborhoodNames
+
+# region
+cleanedList = [x for x in neighborhoodNames if not pd.isna(x)]
+
+cleanedList
+# endregion
+
+list(trainCsv.NEIGHBOURHOOD.unique())
+
+trainCsv[trainCsv['ZIPCODE'].isna()]
+
+trainCsv.loc[trainCsv['NEIGHBOURHOOD'] == 'Psyri']
+
 # - ### *Find the most common room type*
 
 # region
