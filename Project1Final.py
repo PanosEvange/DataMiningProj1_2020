@@ -224,7 +224,7 @@ trainCsv
 #Let's check which columns contain nan values
 trainCsv.isna().any()
 
-# Handling missing data on zipcode column
+#   - #### Handling missing data on zipcode column
 
 # region
 #find unique values of neighboorhood variable
@@ -247,6 +247,11 @@ for neighborhood in neighborhoodNames:
 #fill nan values with the most common zipcode of the corresponding neighborhood
 trainCsv['ZIPCODE'] = trainCsv['ZIPCODE'].fillna(trainCsv.NEIGHBOURHOOD.map(zipCodeNeighborhoodDict))
 # endregion
+
+#   - #### Handling missing data on transit column
+
+# fill nan values with empty text, as transit column has free text content
+trainCsv['TRANSIT'] = trainCsv['TRANSIT'].fillna("")
 
 # - ### *Find the most common room type*
 
@@ -418,13 +423,7 @@ Image('neighbourhoodWordcloud.png')
 
 # region
 wholeTransitText = ''
-for transitText in trainCsv['TRANSIT']:
-
-    # to be removed
-    if(pd.isna(transitText)): # ignore nan 
-        continue
-    # to be removed
-    
+for transitText in trainCsv['TRANSIT']:  
     wholeTransitText = wholeTransitText + ' ' + transitText
 
 wc = WordCloud(width=600, height=600, background_color='white', stopwords=ENGLISH_STOP_WORDS)
