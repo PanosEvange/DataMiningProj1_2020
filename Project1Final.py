@@ -354,7 +354,15 @@ plt.show()
 
 # region
 
-# to fill
+floatDf = trainCsv[['ROOM_TYPE', 'PRICE']].copy()
+floatDf['PRICE'] = floatDf['PRICE'].str.replace('$','')
+floatDf['PRICE'] = floatDf['PRICE'].str.replace(',','')
+floatDf['PRICE'] = floatDf['PRICE'].astype(float)
+
+# groupBy month
+pricesSeries = floatDf.groupby(['ROOM_TYPE'])['PRICE'].mean()
+mostExpensiveRoomType = pricesSeries[pricesSeries == pricesSeries.max()]
+print('The most expensive room type is the \'' + str(mostExpensiveRoomType.index[0]) + '\'')
 
 # endregion
 
