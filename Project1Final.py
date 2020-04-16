@@ -415,13 +415,27 @@ wc.generate(wholeDescriptionText)
 wc.to_file('descriptionWordcloud.png')
 
 Image('descriptionWordcloud.png')
-
 # endregion
 
 #   - #### Last review Wordcloud
 
 # region
+wholeReviewText = ''
+for reviewText in trainCsv['LAST_REVIEW']:
 
-# to fill
+    # to be removed
+    if(pd.isna(reviewText)): # ignore nan 
+        continue
+    # to be removed
+    
+    wholeReviewText = wholeReviewText + ' ' + reviewText
 
+wc = WordCloud(width=600, height=600, background_color='white', stopwords=ENGLISH_STOP_WORDS)
+
+wc.generate(wholeReviewText)
+wc.to_file('lastReviewWordcloud.png')
+
+Image('lastReviewWordcloud.png')
 # endregion
+
+
