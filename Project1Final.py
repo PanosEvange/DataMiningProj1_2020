@@ -328,11 +328,15 @@ trainCsv.dropna(subset=['HOST_SINCE'], inplace=True)
 
 #   - #### Handling missing data on host response rate column
 
-# region
+# Let's check how many entries have nan value on host repsonse rate column
 
-# to fill
+len(trainCsv[trainCsv['HOST_RESPONSE_RATE'].isna() == True])
 
-# endregion
+# The number of these entries is large so we cannot drop them
+
+# Let's fill nan values with '-' as we cannot retrieve the response rate from something else
+
+trainCsv['HOST_RESPONSE_RATE'] = trainCsv['HOST_RESPONSE_RATE'].fillna('-')
 
 #   - #### Handling missing data on host identity verified column
 
@@ -591,5 +595,3 @@ wc.to_file('lastReviewWordcloud.png')
 
 Image('lastReviewWordcloud.png')
 # endregion
-
-
