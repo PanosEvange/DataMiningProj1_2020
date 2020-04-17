@@ -261,8 +261,13 @@ trainCsv['TRANSIT'] = trainCsv['TRANSIT'].fillna("")
 trainCsv['BEDROOMS'] = trainCsv['BEDROOMS'].fillna(trainCsv['BEDS'])
 
 # drop rows that have nan values on both bedrooms and beds columns (where bedrooms are still nan)
-trainCsv = trainCsv.dropna(subset=['BEDROOMS'])
+trainCsv.dropna(subset=['BEDROOMS'], inplace=True)
 # endregion
+
+#   - #### Handling missing data on beds column
+
+# the beds nan values are few, so we will fill nan values with the number of bedrooms, that means 1 bedroom for each bed
+trainCsv['BEDS'] = trainCsv['BEDS'].fillna(trainCsv['BEDROOMS'])
 
 # - ### *Find the most common room type*
 
