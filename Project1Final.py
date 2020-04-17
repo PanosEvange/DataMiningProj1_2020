@@ -356,11 +356,19 @@ len(trainCsv[trainCsv['HOST_HAS_PROFILE_PIC'].isna() == True])
 
 #   - #### Handling missing data on first review column
 
-# region
+# Let's check how many entries have nan value on first review  column
 
-# to fill
+len(trainCsv[trainCsv['FIRST_REVIEW'].isna() == True])
 
-# endregion
+# Let's check how many entries with number of reviews != 0, have nan values on first review column
+
+len(trainCsv[(trainCsv['FIRST_REVIEW'].isna() == True) & (trainCsv['NUMBER_OF_REVIEWS'] != '0')])
+
+# There is no nan value on first review column with number of reviews != 0
+
+# Let's fill nan values with '-' as there is no first review (because these entries have 0 reviews)
+
+trainCsv['FIRST_REVIEW'] = trainCsv['FIRST_REVIEW'].fillna('-')
 
 #   - #### Handling missing data on description column
 
