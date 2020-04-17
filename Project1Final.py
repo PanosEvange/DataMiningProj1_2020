@@ -271,19 +271,17 @@ trainCsv['BEDS'] = trainCsv['BEDS'].fillna(trainCsv['BEDROOMS'])
 
 #   - #### Handling missing data on review scores rating column
 
-# region
 # most of entries with nan value on REVIEW_SCORES_RATING has 0 number of reviews, so we will fill REVIEW_SCORES_RATING with '-'
 # because 0 score rating means that they are bad hosts, but we don't know if they are good or bad hosts as they don't have many reviews
 trainCsv['REVIEW_SCORES_RATING'] = trainCsv['REVIEW_SCORES_RATING'].fillna('-')
-# endregion
 
 #   - #### Handling missing data on neighborhood column
 
-# region
+# let's check how many entries have nan value on neighbourhood column
+len(trainCsv[trainCsv['NEIGHBOURHOOD'].isna() == True])
 
-# to fill
-
-# endregion
+# the number of these entries is not large so we will drop them
+trainCsv.dropna(subset=['NEIGHBOURHOOD'], inplace=True)
 
 #   - #### Handling missing data on name column
 
@@ -308,6 +306,9 @@ trainCsv['REVIEW_SCORES_RATING'] = trainCsv['REVIEW_SCORES_RATING'].fillna('-')
 # to fill
 
 # endregion
+
+# reset index of dataframe as we have dropped some rows
+trainCsv.reset_index(inplace=True)
 
 # - ### *Find the most common room type*
 
@@ -456,13 +457,7 @@ map
 
 # region
 wholeNeihborhoodText = ''
-for neihborhoodText in trainCsv['NEIGHBOURHOOD']:
-
-    # to be removed
-    if(pd.isna(neihborhoodText)): # ignore nan 
-        continue
-    # to be removed
-    
+for neihborhoodText in trainCsv['NEIGHBOURHOOD']:  
     # make words like "Agios Nikolaos" one word -> AgiosNikolaos
     neihborhoodText = neihborhoodText.replace(" ", "")
     
