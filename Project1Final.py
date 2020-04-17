@@ -285,11 +285,8 @@ trainCsv.dropna(subset=['NEIGHBOURHOOD'], inplace=True)
 
 #   - #### Handling missing data on name column
 
-# region
-
-# to fill
-
-# endregion
+# fill nan values with empty text, as name column has free text content
+trainCsv['NAME'] = trainCsv['NAME'].fillna("")
 
 #   - #### Handling missing data on last review column
 
