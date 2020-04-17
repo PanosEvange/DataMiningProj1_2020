@@ -269,6 +269,46 @@ trainCsv.dropna(subset=['BEDROOMS'], inplace=True)
 # the beds nan values are few, so we will fill nan values with the number of bedrooms, that means 1 bedroom for each bed
 trainCsv['BEDS'] = trainCsv['BEDS'].fillna(trainCsv['BEDROOMS'])
 
+#   - #### Handling missing data on review scores rating column
+
+# region
+# most of entries with nan value on REVIEW_SCORES_RATING has 0 number of reviews, so we will fill REVIEW_SCORES_RATING with '-'
+# because 0 score rating means that they are bad hosts, but we don't know if they are good or bad hosts as they don't have many reviews
+trainCsv['REVIEW_SCORES_RATING'] = trainCsv['REVIEW_SCORES_RATING'].fillna('-')
+# endregion
+
+#   - #### Handling missing data on neighborhood column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on name column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on last review column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on host since column
+
+# region
+
+# to fill
+
+# endregion
+
 # - ### *Find the most common room type*
 
 # region
