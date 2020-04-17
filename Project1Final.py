@@ -372,7 +372,7 @@ trainCsv['FIRST_REVIEW'] = trainCsv['FIRST_REVIEW'].fillna('-')
 
 #   - #### Handling missing data on description column
 
-# Let's check how many entries have nan value on first review  column
+# Let's check how many entries have nan value on description  column
 
 len(trainCsv[trainCsv['DESCRIPTION'].isna() == True])
 
@@ -382,11 +382,13 @@ trainCsv['DESCRIPTION'] = trainCsv['DESCRIPTION'].fillna("")
 
 #   - #### Handling missing data on city column
 
-# region
+# Let's check how many entries have nan value on city  column
 
-# to fill
+len(trainCsv[trainCsv['CITY'].isna() == True])
 
-# endregion
+# The number of these entries is not large so we will drop them
+
+trainCsv.dropna(subset=['CITY'], inplace=True)
 
 # reset index of dataframe as we have dropped some rows
 trainCsv.reset_index(inplace=True)
