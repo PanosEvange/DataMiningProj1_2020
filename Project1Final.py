@@ -372,11 +372,13 @@ trainCsv['FIRST_REVIEW'] = trainCsv['FIRST_REVIEW'].fillna('-')
 
 #   - #### Handling missing data on description column
 
-# region
+# Let's check how many entries have nan value on first review  column
 
-# to fill
+len(trainCsv[trainCsv['DESCRIPTION'].isna() == True])
 
-# endregion
+# Fill nan values with empty text, as description column has free text content
+
+trainCsv['DESCRIPTION'] = trainCsv['DESCRIPTION'].fillna("")
 
 #   - #### Handling missing data on city column
 
@@ -572,13 +574,7 @@ Image('transitWordcloud.png')
 
 # region
 wholeDescriptionText = ''
-for descriptionText in trainCsv['DESCRIPTION']:
-
-    # to be removed
-    if(pd.isna(descriptionText)): # ignore nan 
-        continue
-    # to be removed
-    
+for descriptionText in trainCsv['DESCRIPTION']:    
     wholeDescriptionText = wholeDescriptionText + ' ' + descriptionText
 
 wc = WordCloud(width=600, height=600, background_color='white', stopwords=ENGLISH_STOP_WORDS)
