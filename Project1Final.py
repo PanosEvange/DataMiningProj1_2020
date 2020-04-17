@@ -256,6 +256,10 @@ trainCsv['TRANSIT'] = trainCsv['TRANSIT'].fillna("")
 #   - #### Handling missing data on bedroom column
 
 
+# Let's check how many entries have nan value on bedroom column
+
+len(trainCsv[trainCsv['BEDROOMS'].isna() == True])
+
 # region
 # the bedrooms nan values are few, so we will fill nan values with the number of beds, that means 1 bedroom for each bed
 trainCsv['BEDROOMS'] = trainCsv['BEDROOMS'].fillna(trainCsv['BEDS'])
@@ -265,6 +269,10 @@ trainCsv.dropna(subset=['BEDROOMS'], inplace=True)
 # endregion
 
 #   - #### Handling missing data on beds column
+
+# Let's check how many entries have nan value on beds column
+
+len(trainCsv[trainCsv['BEDS'].isna() == True])
 
 # the beds nan values are few, so we will fill nan values with the number of bedrooms, that means 1 bedroom for each bed
 trainCsv['BEDS'] = trainCsv['BEDS'].fillna(trainCsv['BEDROOMS'])
@@ -311,11 +319,12 @@ trainCsv.dropna(subset=['LAST_REVIEW'], inplace=True)
 
 #   - #### Handling missing data on host since column
 
-# region
+# Let's check how many entries have nan value on host since column
 
-# to fill
+len(trainCsv[trainCsv['HOST_SINCE'].isna() == True])
 
-# endregion
+# the number of these entries is not large so we will drop them
+trainCsv.dropna(subset=['HOST_SINCE'], inplace=True)
 
 #   - #### Handling missing data on host response rate column
 
