@@ -340,19 +340,19 @@ trainCsv['HOST_RESPONSE_RATE'] = trainCsv['HOST_RESPONSE_RATE'].fillna('-')
 
 #   - #### Handling missing data on host identity verified column
 
-# region
+# Let's check how many entries have nan value on host identity verified column
 
-# to fill
+len(trainCsv[trainCsv['HOST_IDENTITY_VERIFIED'].isna() == True])
 
-# endregion
+# Now there are no nan values for this column (as we have dropped some rows in previous steps) 
 
 #   - #### Handling missing data on host has profile pic column
 
-# region
+# Let's check how many entries have nan value on host has profile pic column
 
-# to fill
+len(trainCsv[trainCsv['HOST_HAS_PROFILE_PIC'].isna() == True])
 
-# endregion
+# Now there are no nan values for this column (as we have dropped some rows in previous steps)
 
 #   - #### Handling missing data on first review column
 
