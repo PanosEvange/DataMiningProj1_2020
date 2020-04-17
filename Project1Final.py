@@ -221,7 +221,7 @@ trainCsv
 
 # Let's see if we have missing data
 
-#Let's check which columns contain nan values
+# Let's check which columns contain nan values
 trainCsv.isna().any()
 
 #   - #### Handling missing data on zipcode column
@@ -277,7 +277,8 @@ trainCsv['REVIEW_SCORES_RATING'] = trainCsv['REVIEW_SCORES_RATING'].fillna('-')
 
 #   - #### Handling missing data on neighborhood column
 
-# let's check how many entries have nan value on neighbourhood column
+# Let's check how many entries have nan value on neighbourhood column
+
 len(trainCsv[trainCsv['NEIGHBOURHOOD'].isna() == True])
 
 # the number of these entries is not large so we will drop them
@@ -290,10 +291,22 @@ trainCsv['NAME'] = trainCsv['NAME'].fillna("")
 
 #   - #### Handling missing data on last review column
 
+# Let's check how many entries with number of reviews != 0, have nan values on last review column
+
+len(trainCsv[(trainCsv['LAST_REVIEW'].isna() == True) & (trainCsv['NUMBER_OF_REVIEWS'] != '0')])
+
+# As we see the number of these entries is not large, so we will drop these rows and we will fill
+# nan values of the rows with number of reviews == 0 with '' 
+
 # region
+# fill nan values of entries that don't have any reviews with ''
+trainCsv['LAST_REVIEW'] = trainCsv.apply(
+    lambda row: '' if (pd.isna(row['LAST_REVIEW']) and row['NUMBER_OF_REVIEWS'] == '0') else row['LAST_REVIEW'],
+    axis=1
+)
 
-# to fill
-
+# drop entries with nan on last_review that have number_of_reviews > 0 
+trainCsv.dropna(subset=['LAST_REVIEW'], inplace=True)
 # endregion
 
 #   - #### Handling missing data on host since column
@@ -304,8 +317,60 @@ trainCsv['NAME'] = trainCsv['NAME'].fillna("")
 
 # endregion
 
+#   - #### Handling missing data on host response rate column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on host identity verified column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on host has profile pic column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on first review column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on description column
+
+# region
+
+# to fill
+
+# endregion
+
+#   - #### Handling missing data on city column
+
+# region
+
+# to fill
+
+# endregion
+
 # reset index of dataframe as we have dropped some rows
 trainCsv.reset_index(inplace=True)
+
+# Let's see if we still have missing data
+
+trainCsv.isna().any()
 
 # - ### *Find the most common room type*
 
@@ -508,12 +573,6 @@ Image('descriptionWordcloud.png')
 # region
 wholeReviewText = ''
 for reviewText in trainCsv['LAST_REVIEW']:
-
-    # to be removed
-    if(pd.isna(reviewText)): # ignore nan 
-        continue
-    # to be removed
-    
     wholeReviewText = wholeReviewText + ' ' + reviewText
 
 wc = WordCloud(width=600, height=600, background_color='white', stopwords=ENGLISH_STOP_WORDS)
