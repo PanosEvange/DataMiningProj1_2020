@@ -601,3 +601,40 @@ wc.to_file('lastReviewWordcloud.png')
 
 Image('lastReviewWordcloud.png')
 # endregion
+# - ### *2 Extra Custom Questions*
+
+#   - #### How many of the hosts have verified their identity
+
+# region
+identityIdentifiedPercentageSeries = trainCsv['HOST_IDENTITY_VERIFIED'].value_counts(normalize=True)
+
+labels = []
+sizes = []
+
+for index, value in identityIdentifiedPercentageSeries.items():
+    labels.append(index) 
+    sizes.append(value)
+
+labelDict = {
+  "t": "Identified",
+  "f": "Unidentified"
+}
+
+# Change the values of labels list
+labels = [labelDict[x] for x in labels]
+
+# Pie chart
+
+# only "explode" the 2nd slice
+explode = (0, 0.1)  
+
+#add colors
+colors = ['#DF0000','#00AD00']
+
+plt.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+ 
+plt.tight_layout()
+
+plt.show()
+# endregion
