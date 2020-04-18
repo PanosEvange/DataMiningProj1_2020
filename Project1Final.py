@@ -37,6 +37,9 @@ import matplotlib.pyplot as plt
 import folium
 from wordcloud import WordCloud
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
+
+# for preprocessing
+from string import punctuation
 # endregion
 
 # ## __Data Exploration__
@@ -391,7 +394,7 @@ len(trainCsv[trainCsv['CITY'].isna() == True])
 trainCsv.dropna(subset=['CITY'], inplace=True)
 
 # reset index of dataframe as we have dropped some rows
-trainCsv.reset_index(inplace=True)
+trainCsv.reset_index(inplace=True, drop=True)
 
 # Let's see if we still have missing data
 
@@ -637,4 +640,43 @@ plt.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
 plt.tight_layout()
 
 plt.show()
+# endregion
+# ## __Recommendation System__
+
+# We have already removed some stop words for the description wordcloud. Let's remove some punctuation and 
+# decrease the number of words to be shown in the wordcloud.
+
+# region
+wholeDescriptionText = ''
+for descriptionText in trainCsv['DESCRIPTION']:   
+
+    # Remove any punctuation from the text
+    for c in punctuation:
+        descriptionText = descriptionText.replace(c, ' ')
+
+    wholeDescriptionText = wholeDescriptionText + ' ' + descriptionText
+
+wc = WordCloud(width=600, height=600, background_color='white', max_words=50, stopwords=ENGLISH_STOP_WORDS)
+
+wc.generate(wholeDescriptionText)
+wc.to_file('descriptionWordcloud2.png')
+
+Image('descriptionWordcloud2.png')
+# endregion
+
+# We have already replaced nan values on name and description columns with "" (null string). So we are ready
+# to copy the columns ID, NAME and DESCRIPTION.
+
+# region
+recommendCsv = trainCsv[['ID', 'NAME', 'DESCRIPTION']].copy()
+
+# let's drop duplicate rows
+recommendCsv.drop_duplicates(subset='ID', inplace=True)
+
+# reset index of dataframe as we have dropped some rows
+recommendCsv.reset_index(inplace=True, drop=True)
+
+# make new column with the concatenation of name and description
+recommendCsv['CONCATENATION'] = recommendCsv['NAME'] + recommendCsv['DESCRIPTION']
+
 # endregion
