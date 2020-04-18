@@ -40,6 +40,9 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
 # for preprocessing
 from string import punctuation
+
+# for recommendation system
+from sklearn.feature_extraction.text import TfidfVectorizer
 # endregion
 
 # ## __Data Exploration__
@@ -678,5 +681,17 @@ recommendCsv.reset_index(inplace=True, drop=True)
 
 # make new column with the concatenation of name and description
 recommendCsv['CONCATENATION'] = recommendCsv['NAME'] + recommendCsv['DESCRIPTION']
+# endregion
 
+# Let's create the TF-IDF matrix of unigrams and bigrams for the CONCATENATION column
+
+# region
+tfIdfVectorizer = TfidfVectorizer(
+                                max_features=None,
+                                stop_words=ENGLISH_STOP_WORDS,
+                                ngram_range=(1, 2)        # as we want both unigrams and bigrams
+                                )
+
+
+biUniGramsMatrix = tfIdfVectorizer.fit_transform(recommendCsv['CONCATENATION'])
 # endregion
