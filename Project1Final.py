@@ -794,3 +794,40 @@ mostSimilarDict
 # Όπως παρατηρούμε πολλά ζευγάρια έχουν score 1.0 παρόλο που είναι διαφορετικά τα IDS (δηλαδή δεν πρόκειται για το ίδιο ακίνητο)
 # αλλά πρόκειται ίσως για συγκρότημα ακινήτων ή κάποιο hotel/hostel, οπότε ο ιδιοκτήτης έχει βάλλει το ίδιο όνομα και περιγραφή. 
 # Επομένως είναι λογικό αυτό που παρατηρούμε.
+
+#   - #### Recommend Function
+
+def recommend(itemId, num):
+    """Returns the n most similar entries with item_id entry"""
+
+    stringToReturn = "Recommending " +  str(num)  + " listings similar to this entry \n" + \
+                     "-------------------------------------------\n"
+    
+    # we need to find the index of this specific itemId
+    indexInDf = recommendCsv.index[recommendCsv['ID'] == str(itemId)][0]
+
+    # go to calculatedCosine matrix as we have already calculated all scores for each entry
+    # and take the 1d array with similarity scores of this entry with all other entries
+    thisEntryScores = np.copy(calculatedCosine[indexInDf])
+
+    # replace thisEntryScores[indexInDf] with 0 , as it will be always 1, as it is the cosine similarity with itself
+    thisEntryScores[indexInDf] = 0
+
+    # call our function to find the indices of largest values
+    mostSimilarEntries = largestIndices(thisEntryScores, num)
+
+    # mostSimilarEntries is a tuple with 1 array, that contains the indices of the entries that are the most similar to this entry
+    for indexPair in zip(*mostSimilarEntries):
+        # indexPair is of form of (indexEntry,), so let's take only the indexEntry
+        indexEntry = indexPair[0]
+
+        #stringToReturn += "Recommended: ID " + str(recommendCsv['ID'][indexEntry]) + "\n"
+        stringToReturn += "Recommended: " + str(recommendCsv['NAME'][indexEntry]) + "\n" + \
+                          "Description: " + str(recommendCsv['DESCRIPTION'][indexEntry]) + "\n" + \
+                          "(score:" + str(thisEntryScores[indexEntry]) + ")" + "\n\n"
+
+    return stringToReturn
+
+# Let's run an example
+
+print(recommend(29173432,5))
