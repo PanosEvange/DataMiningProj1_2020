@@ -761,6 +761,36 @@ def largestIndices(array, n):
     indices = indices[np.argsort(-flatArray[indices])]
     return np.unravel_index(indices, array.shape)
 
+# region
 mostSimilar100entries = largestIndices(calculatedCosineCopy, 100)
 
 mostSimilar100entries
+# endregion
+
+# The above variable mostSimilar100entries is a tuple which consists of 2 arrays. The first array contains
+# the indices of the first entry in each pair and the second array contains the indices of the second entry
+# in each pair.
+
+# So let's construct the dictionary of the 100 most similar pairs.
+
+# region
+mostSimilarDict = dict()
+pairIndex = 1
+
+for (firstEntry,secondEntry) in zip(*mostSimilar100entries):
+    # keyString is of form pair_1, pair_2 etc
+    keyString = "pair_" + str(pairIndex)
+    # recommendCsv['ID'][firstEntry] is the ID for the first entry
+    # recommendCsv['ID'][secondEntry] is the ID for the second entry
+    # calculatedCosineCopy[firstEntry][secondEntry] is the cosine similarity score between these 2 entries
+    mostSimilarDict[keyString] = (recommendCsv['ID'][firstEntry],
+                                  recommendCsv['ID'][secondEntry],
+                                  calculatedCosineCopy[firstEntry][secondEntry])
+    pairIndex += 1 
+    
+mostSimilarDict
+# endregion
+
+# Όπως παρατηρούμε πολλά ζευγάρια έχουν score 1.0 παρόλο που είναι διαφορετικά τα IDS (δηλαδή δεν πρόκειται για το ίδιο ακίνητο)
+# αλλά πρόκειται ίσως για συγκρότημα ακινήτων ή κάποιο hotel/hostel, οπότε ο ιδιοκτήτης έχει βάλλει το ίδιο όνομα και περιγραφή. 
+# Επομένως είναι λογικό αυτό που παρατηρούμε.
