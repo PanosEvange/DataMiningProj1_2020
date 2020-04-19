@@ -414,6 +414,12 @@ roomTypesCountSeries = trainCsv.groupby(['ROOM_TYPE'])['ID'].nunique()
 mostCommonRoomType = roomTypesCountSeries[roomTypesCountSeries == roomTypesCountSeries.max()]
 
 print('The most common room type is the \'' + str(mostCommonRoomType.index[0]) + '\'')
+
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=roomTypesCountSeries.values, y=roomTypesCountSeries.index)
+ax.set(title='Histogram of Room Type variable', xlabel='Entries', ylabel='Room Type')
+plt.show()
 # endregion
 
 # - ### *Price evaluation during 3 months*
@@ -463,6 +469,13 @@ neighbourhoodReviewsSeries = neighbourhoodReviewsSeries.sort_values(ascending=Fa
 print('The first 5 neighbourhoods with most reviews are:')
 for x in neighbourhoodReviewsSeries[0:5].index:
     print(x)
+
+neighbourhoodReviewsSeries = neighbourhoodReviewsSeries.head(5)
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=neighbourhoodReviewsSeries.values, y=neighbourhoodReviewsSeries.index)
+ax.set(title='Histogram of Neighbourhood Reviews variable', xlabel='Entries', ylabel='Neighbourhood')
+plt.show()
 # endregion
 
 # - ### *Find the neighbourhood with the most entries*
@@ -475,6 +488,12 @@ neighbourhoodEntriesSeries = trainCsv.groupby(['NEIGHBOURHOOD'])['ID'].nunique()
 neighbourhoodEntriesSeries = neighbourhoodEntriesSeries.sort_values(ascending=False)
 
 print('The neighbourhood with most entries is:',neighbourhoodReviewsSeries.index[0])
+
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=neighbourhoodEntriesSeries.values, y=neighbourhoodEntriesSeries.index)
+ax.set(title='Histogram of Neighbourhood variable', xlabel='Entries', ylabel='Neighbourhood')
+plt.show()
 # endregion
 
 # - ### *Find number of entries per neighbourhood and per month*
@@ -526,6 +545,11 @@ pricesSeries = floatDf.groupby(['ROOM_TYPE'])['PRICE'].mean()
 mostExpensiveRoomType = pricesSeries[pricesSeries == pricesSeries.max()]
 print('The most expensive room type is the \'' + str(mostExpensiveRoomType.index[0]) + '\'')
 
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=pricesSeries.values, y=pricesSeries.index)
+ax.set(title='Histogram of room type mean price variable', xlabel='Entries', ylabel='Room type')
+plt.show()
 # endregion
 
 # - ### *Show some entries in Follium Map*
