@@ -684,7 +684,7 @@ plt.show()
 wholeDescriptionText = ''
 for descriptionText in trainCsv['DESCRIPTION']:   
 
-    Remove any punctuation from the text
+    # Remove any punctuation from the text
     for c in punctuation:
         descriptionText = descriptionText.replace(c, ' ')
 
