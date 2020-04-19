@@ -44,6 +44,7 @@ from string import punctuation
 # for recommendation system
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from scipy.sparse import coo_matrix
 # endregion
 
 # ## __Data Exploration__
@@ -686,6 +687,11 @@ recommendCsv.drop_duplicates(subset='ID', inplace=True)
 # reset index of dataframe as we have dropped some rows
 recommendCsv.reset_index(inplace=True, drop=True)
 
+# to be removed
+# take a subset because data is too large
+recommendCsv = recommendCsv[:500]
+# to be removed
+
 # make new column with the concatenation of name and description
 recommendCsv['CONCATENATION'] = recommendCsv['NAME'] + recommendCsv['DESCRIPTION']
 # endregion
@@ -718,3 +724,27 @@ print('Pairwise dense output:\n {}\n'.format(calculatedCosine))
 
 calculatedCosineSparse = cosine_similarity(biUniGramsMatrix, dense_output=False)
 print('Pairwise sparse output:\n {}\n'.format(calculatedCosineSparse))
+
+# Let's make a list of tuples of all calculatedCosineSparse so as we can sort them based on score value.
+
+# cosSimMatrix = coo_matrix(calculatedCosineSparse)
+# cosineSimilarityTuples = zip(cosSimMatrix.row,
+#                              cosSimMatrix.col,
+#                              cosSimMatrix.data)
+
+# Let's sort them
+
+# sortedTuples = sorted(cosineSimilarityTuples, key=lambda x: x[2], reverse=True)
+
+# sortedTuples 
+
+def largestIndices(array, n):
+    """Returns the n largest indices from a numpy array."""
+    # flatten the array
+    flatArray = array.flatten()
+    indices = np.argpartition(flatArray, -n)[-n:]
+    indices = indices[np.argsort(-flatArray[indices])]
+    return np.unravel_index(indices, array.shape)
+
+
+mostSimilar100entries = largestIndices(calculatedCosine, 100)
