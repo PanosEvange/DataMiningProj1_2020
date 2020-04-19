@@ -508,7 +508,7 @@ copyTrainCsv = copyTrainCsv[copyTrainCsv.duplicated(subset='ID', keep='first') =
 sns.set(style="whitegrid")
 plt.figure(figsize=(10, 13))
 ax = sns.countplot(y="NEIGHBOURHOOD", hue="ROOM_TYPE", data=copyTrainCsv)
-ax.set(title='Count of entries most common room type in every neighbourhood', xlabel='Entries', ylabel='Neighborhood')
+ax.set(title='Count of entries by room type in every neighbourhood', xlabel='Entries', ylabel='Neighborhood')
 plt.show()
 # endregion
 
@@ -714,11 +714,7 @@ calculatedCosine = cosine_similarity(biUniGramsMatrix)
 
 print('Pairwise dense output:\n {}\n'.format(calculatedCosine))
 
+# Let's make a sparse matrix of cosine similarities.
+
 calculatedCosineSparse = cosine_similarity(biUniGramsMatrix, dense_output=False)
 print('Pairwise sparse output:\n {}\n'.format(calculatedCosineSparse))
-
-calculatedCosineSparse
-
-print(calculatedCosineSparse[1])
-
-
