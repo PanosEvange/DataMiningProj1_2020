@@ -502,8 +502,14 @@ plt.show()
 
 # region
 
-# to fill
+copyTrainCsv = trainCsv[['NEIGHBOURHOOD', 'ROOM_TYPE', 'ID']].copy()
+copyTrainCsv = copyTrainCsv[copyTrainCsv.duplicated(subset='ID', keep='first') == False]
 
+sns.set(style="whitegrid")
+plt.figure(figsize=(10, 13))
+ax = sns.countplot(y="NEIGHBOURHOOD", hue="ROOM_TYPE", data=copyTrainCsv)
+ax.set(title='Count of entries most common room type in every neighbourhood', xlabel='Entries', ylabel='Neighborhood')
+plt.show()
 # endregion
 
 # - ### *Find the most expensive room type*
@@ -700,3 +706,5 @@ biUniGramsMatrix = tfIdfVectorizer.fit_transform(recommendCsv['CONCATENATION'])
 #   - #### Cosine Similarity
 
 calculatedCosine = cosine_similarity(biUniGramsMatrix)
+
+
