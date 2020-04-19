@@ -707,4 +707,18 @@ biUniGramsMatrix = tfIdfVectorizer.fit_transform(recommendCsv['CONCATENATION'])
 
 calculatedCosine = cosine_similarity(biUniGramsMatrix)
 
+# The calculatedCosine is a 2d matrix which containsthe pairwise similarities between
+# all samples in recommendCsv['CONCATENATION'] . For example at position (0,1) we have
+# the cosine similarity score between id0 and id1. That means the similarity
+# of every sentence/document to itself is 1 (hence the diagonal of the matrix will be all ones).
+
+print('Pairwise dense output:\n {}\n'.format(calculatedCosine))
+
+calculatedCosineSparse = cosine_similarity(biUniGramsMatrix, dense_output=False)
+print('Pairwise sparse output:\n {}\n'.format(calculatedCosineSparse))
+
+calculatedCosineSparse
+
+print(calculatedCosineSparse[1])
+
 
