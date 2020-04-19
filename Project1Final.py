@@ -44,7 +44,6 @@ from string import punctuation
 # for recommendation system
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from scipy.sparse import coo_matrix
 # endregion
 
 # ## __Data Exploration__
@@ -687,11 +686,6 @@ recommendCsv.drop_duplicates(subset='ID', inplace=True)
 # reset index of dataframe as we have dropped some rows
 recommendCsv.reset_index(inplace=True, drop=True)
 
-# to be removed
-# take a subset because data is too large
-recommendCsv = recommendCsv[:500]
-# to be removed
-
 # make new column with the concatenation of name and description
 recommendCsv['CONCATENATION'] = recommendCsv['NAME'] + recommendCsv['DESCRIPTION']
 # endregion
@@ -725,18 +719,15 @@ print('Pairwise dense output:\n {}\n'.format(calculatedCosine))
 calculatedCosineSparse = cosine_similarity(biUniGramsMatrix, dense_output=False)
 print('Pairwise sparse output:\n {}\n'.format(calculatedCosineSparse))
 
-# Let's make a list of tuples of all calculatedCosineSparse so as we can sort them based on score value.
+# As we said the diagonal of the matrix will be all ones, so we will fill it with 0 so as to "skip" it
+# when we will search for largerst values. We will also fill with 0 the matrix below diagonal because
+# values are the same with those above diagonal. For example (10,2) and (2,10) have the same value.
 
-# cosSimMatrix = coo_matrix(calculatedCosineSparse)
-# cosineSimilarityTuples = zip(cosSimMatrix.row,
-#                              cosSimMatrix.col,
-#                              cosSimMatrix.data)
+# region
+calculatedCosineCopy =  np.triu(calculatedCosine, 1)
 
-# Let's sort them
-
-# sortedTuples = sorted(cosineSimilarityTuples, key=lambda x: x[2], reverse=True)
-
-# sortedTuples 
+print('Pairwise dense output:\n {}\n'.format(calculatedCosineCopy))
+# endregion
 
 def largestIndices(array, n):
     """Returns the n largest indices from a numpy array."""
@@ -746,5 +737,6 @@ def largestIndices(array, n):
     indices = indices[np.argsort(-flatArray[indices])]
     return np.unravel_index(indices, array.shape)
 
+mostSimilar100entries = largestIndices(calculatedCosineCopy, 100)
 
-mostSimilar100entries = largestIndices(calculatedCosine, 100)
+mostSimilar100entries
