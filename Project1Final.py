@@ -40,10 +40,16 @@ from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
 # for preprocessing
 from string import punctuation
+import re
 
 # for recommendation system
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+# for collocations
+from nltk.collocations import *
+from nltk import word_tokenize
+from nltk.metrics import BigramAssocMeasures
 # endregion
 
 # ## __Data Exploration__
@@ -831,3 +837,53 @@ def recommend(itemId, num):
 # Let's run an example
 
 print(recommend(29173432,5))
+#   - #### Most common collocations
+
+# Before finding the 10 most common collocations let's make a wordcloud of CONCATENATION column.
+# This wordcloud may show us some of the most common collocations.
+
+# region
+wholeConcatText = ''
+for concatText in recommendCsv['CONCATENATION']:   
+    wholeConcatText = wholeConcatText + ' ' + concatText
+
+wc = WordCloud(width=600, height=600, background_color='white', max_words=70, stopwords=ENGLISH_STOP_WORDS)
+
+wc.generate(wholeConcatText)
+wc.to_file('concatWordcloud.png')
+
+Image('concatWordcloud.png')
+# endregion
+
+# Let's use BigramCollocationFinder
+
+# region
+wholeConcatTextForCollocations = []
+for concatTextCollocations in recommendCsv['CONCATENATION']:   
+
+    # Remove any punctuation from the text
+    for c in punctuation:
+        concatTextCollocations = concatTextCollocations.replace(c, ' ')
+
+    # make all letter lower
+    concatTextCollocations = concatTextCollocations.lower()
+
+    # Remove consecutive spaces
+    concatTextCollocations = re.sub(r" {2,}", ' ', concatTextCollocations)    
+    
+    # Split to words as BigramCollocationFinder needs tokens
+    tokens = word_tokenize(concatTextCollocations)
+    # Remove sropwords
+    filtered = [w for w in tokens if w not in ENGLISH_STOP_WORDS]
+
+    wholeConcatTextForCollocations += filtered
+
+scorer = BigramAssocMeasures.likelihood_ratio
+
+finder = BigramCollocationFinder.from_words(wholeConcatTextForCollocations)
+
+finder.nbest(scorer, 10)
+# endregion
+
+# Παρατηρούμε ότι στο τελευταίο wordcloud που φτιάξαμε εμφανίζονται και τα 10 πιο
+# συχνά collocations που βρήκαμε (που αυτό ήταν το επιθυμητό).
