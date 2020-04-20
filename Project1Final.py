@@ -681,6 +681,24 @@ plt.tight_layout()
 
 plt.show()
 # endregion
+#   - #### The mean of Amenities for each Room Type
+
+# region
+roomTypeAmenities = trainCsv[['ROOM_TYPE', 'ID', 'AMENITIES']].copy()
+
+roomTypeAmenities['NUMBER_OF_AMENITIES'] = roomTypeAmenities.AMENITIES.str.count(',') + 1
+roomTypeAmenities = roomTypeAmenities[roomTypeAmenities.duplicated(subset='ID', keep='first') == False]
+numberOfAmenities = roomTypeAmenities.groupby(['ROOM_TYPE'])['NUMBER_OF_AMENITIES'].mean()
+
+print(numberOfAmenities)
+
+sns.set(style="whitegrid")
+plt.figure(figsize=(9, 9))
+ax = sns.barplot(x=numberOfAmenities.values, y=numberOfAmenities.index)
+ax.set(title='Histogram of Amenities per Room Type', xlabel='Entries', ylabel='Room type')
+plt.show()
+# endregion
+
 # ## __Recommendation System__
 
 # We have already removed some stop words for the description wordcloud. Let's remove some punctuation and 
