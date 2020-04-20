@@ -837,6 +837,7 @@ def recommend(itemId, num):
 # Let's run an example
 
 print(recommend(29173432,5))
+
 #   - #### Most common collocations
 
 # Before finding the 10 most common collocations let's make a wordcloud of CONCATENATION column.
